@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Automation Practice test suite" parallel="methods" thread-count="2"
+	verbose="1">
+	<test name="UI automation">
+		<parameter name="browser" value="${browser}" />
+		<parameter name="isLambdatest" value="${isLambdatest}" />
+		<parameter name="isheadless" value="${isheadless}" />
+		<classes>
+			<class name="com.ui.test.LoginTest" />
+		</classes>
+	</test>
+</suite>

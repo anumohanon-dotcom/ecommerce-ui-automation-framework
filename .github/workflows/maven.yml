@@ -54,9 +54,19 @@ jobs:
         if: always()
         run: |
           mkdir -p public/extent-reports
-          cp -R report.html public/extent-reports/
-          cp -R screenshot/ public/extent-reports/screenshots/
-          ls -l
+
+          if [ -f "report.html" ]; then
+            cp report.html public/extent-reports/
+          fi
+
+          if [ -d "screenshot" ]; then
+            mkdir -p public/extent-reports/screenshot
+            cp -R screenshot/* public/extent-reports/screenshot/
+          else
+            echo "screenshot folder not found"
+          fi
+
+          ls -R public
 
       - name: Deploy 🚀
         if: always()

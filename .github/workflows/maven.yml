@@ -1,0 +1,67 @@
+name: Test Automation Framework
+
+on:
+  schedule:
+    - cron: '30 23 * * *'
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run tests using Maven
+        run: mvn clean test -Dbrowser=chrome -DisLambdatest=true -Disheadless=true
+
+      - name: Archive logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-logs
+          path: logs/
+
+      - name: Archive Extent Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-report
+          path: report.html  
+
+      - name: Upload screenshot as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot
+          path: screenshot/
+
+      - name: Notify test completion
+        run: echo "Tests completed"
+
+      - name: Copy Report to gh-pages Folder
+        if: always()
+        run: |
+          mkdir -p public/extent-reports
+          cp -R report.html public/extent-reports/
+          cp -R screenshot/ public/extent-reports/screenshots/
+          ls -l
+
+      - name: Deploy 🚀
+        if: always()
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: public/extent-reports/
+          token: ${{ secrets.PAT1234 }}
+          clean: true

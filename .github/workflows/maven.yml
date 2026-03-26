@@ -1,0 +1,46 @@
+name: Test Automation Framework
+
+on:
+  schedule:
+    - cron: '30 23 * * *'
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run tests using Maven
+      run: mvn clean test -Dbrowser=chrome -DisLambdatest=false -Disheadless=false
+
+    - name: Archive logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: automation-logs
+        path: logs/
+
+
+    - name: Archive Extent Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: extent-report
+        path: report.html  
+
+    - name: Notify test completion
+      run: echo "Tests completed"

@@ -25,7 +25,7 @@ jobs:
         cache: maven
 
     - name: Run tests using Maven
-      run: mvn clean test -Dbrowser=chrome -DisLambdatest=false -Disheadless=false
+      run: mvn clean test -Dbrowser=chrome -DisLambdatest=true -Disheadless=true
 
     - name: Archive logs
       if: always()

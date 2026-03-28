@@ -24,7 +24,7 @@ public class TestBase {
 	@Parameters({"browser","isLambdatest","isheadless"})
 	@BeforeMethod(description="Load the home page")
 	public void SetUp(
-			@Optional("chrome") String browser,
+			@Optional("CHROME") String browser,
 			@Optional("true") boolean isLambdatest,
 			@Optional("false") boolean isheadless,ITestResult result) {
 		this.isLambdatest=isLambdatest;

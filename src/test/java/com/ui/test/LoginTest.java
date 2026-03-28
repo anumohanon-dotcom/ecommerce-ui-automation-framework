@@ -26,7 +26,7 @@ public class LoginTest extends TestBase {
 	public void Logintest1(User user){
 		
 		
-		assertEquals(homepage.goToSigninPage().doLoginWith(user.getEmailaddress(),user.getPassword()).getUserName(), "Rohan arahan");
+		assertEquals(homepage.goToSigninPage().doLoginWith(user.getEmailaddress(),user.getPassword()).getUserName(), "Rohan Arharahan");
 		
 	}
 	
